@@ -1,12 +1,15 @@
 from b3tojson.data import Company, Stock
 from typing import Dict
 
+import jsonpickle
+
+
 class FileHandle():
-    filename = ""
     companies: {Company}
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, in_file, out_file):
+        self.in_file = in_file
+        self.out_file = out_file
         self.companies = {}
     
     def _process_raw_data(self, lines):
@@ -22,17 +25,32 @@ class FileHandle():
             # STOCK DATA
             elif line.startswith('02'):
                 code = line[14:18]
-                self.companies[code].add_stock(Stock(line[2:14], line[18:21], line[21:81]))
-        
-        print(self.companies['BIDI'])
+                bdi = line[18:21]
+                # 002: STD STOCK // 012: FII
+                if bdi == '002' or bdi == '012':
+                    self.companies[code].add_stock(Stock(line[2:14], bdi, line[21:81], line[133:143]))
+    
+    def _to_json(self):
+        jsonpickle.set_preferred_backend('json')
+        jsonpickle.set_encoder_options('json', ensure_ascii=False)
+        return jsonpickle.encode(self.companies, unpicklable=False)
     
     def analyze_file(self):
         try:
-            with open(self.filename, "r", encoding="latin-1") as fd:
+            with open(self.in_file, "r", encoding="utf-8") as fd:
                 lines = fd.readlines()
         except FileNotFoundError:
-            print(f"Could not open file {self.filename}")
+            print(f"Could not open file {self.in_file}")
+        # TODO: Handle file enconding by iteself
+        except UnicodeDecodeError:
+            print("Please, ensure the file to be encoded as UTF-8")
         except Exception:
             raise
         else:
             self._process_raw_data(lines)
+    
+    def save_json(self):
+        encoded = self._to_json()
+
+        with open(self.out_file, 'w', encoding="utf-8") as fd:
+            fd.write(encoded)
