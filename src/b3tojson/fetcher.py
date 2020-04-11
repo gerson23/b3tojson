@@ -8,6 +8,7 @@ B3_NEGOTIABLE_URL = "http://bvmf.bmfbovespa.com.br/suplemento/ExecutaAcaoDownloa
 B3_ENCODING = "iso-8859-1"
 FILES_DIR = "files"
 TEMP_ZIP = path.join(FILES_DIR, "temp.zip")
+JSON_FILE = path.join(FILES_DIR, "stocks_data.json")
 
 def get_b3_data():
     response = requests.get(B3_NEGOTIABLE_URL, stream=True)
