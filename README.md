@@ -1,5 +1,8 @@
 # b3tojson
 
+![Python package](https://github.com/gerson23/b3tojson/workflows/Python%20package/badge.svg)
+![Upload Python Package](https://github.com/gerson23/b3tojson/workflows/Upload%20Python%20Package/badge.svg)
+
 This utility is intended to help converting B3 (Brasil, Bolsa, Balcão) own data format to a more portable and usable format like JSON.
 
 ## Dependencies
