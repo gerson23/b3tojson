@@ -6,3 +6,7 @@ venv/
 .DS_Store
 
 files/*
+
+build/
+dist/
+src/b3tojson.egg-info/
