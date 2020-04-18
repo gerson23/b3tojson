@@ -10,6 +10,7 @@ FILES_DIR = "files"
 TEMP_ZIP = path.join(FILES_DIR, "temp.zip")
 JSON_FILE = path.join(FILES_DIR, "stocks_data.json")
 
+
 def get_b3_data():
     response = requests.get(B3_NEGOTIABLE_URL, stream=True)
 
@@ -31,6 +32,7 @@ def get_b3_data():
     remove(TEMP_ZIP)
     return b3_name
 
+
 def _process_file(b3_name):
     """
     Process downloaded file in order to fix encoding.
@@ -40,6 +42,6 @@ def _process_file(b3_name):
     """
     with codecs.open(b3_name, 'r', B3_ENCODING) as source_file:
         contents = source_file.read()
-    
+
     with codecs.open(b3_name, 'w', 'utf-8') as destination_file:
         destination_file.write(contents)
