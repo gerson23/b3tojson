@@ -2,6 +2,12 @@ from b3tojson.data import Company, Stock
 
 import jsonpickle
 
+ACCEPTED_BDI = [
+    '002',  # STD STOCK
+    '012',  # FII
+    '014'   # ETF
+]
+
 
 class FileHandle():
     companies: {Company}
@@ -26,7 +32,7 @@ class FileHandle():
                 code = line[14:18]
                 bdi = line[18:21]
                 # 002: STD STOCK // 012: FII
-                if bdi == '002' or bdi == '012':
+                if bdi in ACCEPTED_BDI:
                     self.companies[code].add_stock(Stock(line[2:14], bdi,
                                                          line[21:81],
                                                          line[133:143]))
